@@ -1,20 +1,18 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, roc_auc_score
 
-def evaluate_model(model, X_test, y_test):
+def evaluate_model(grid_model, X_test, y_test):
     """
-    Evaluate a single model and return metrics as a dictionary
+    Evaluate a single model and return metrics and predictions
     """
-    y_pred = model.predict(X_test)
-
-    metrics = {
-        'accuracy': accuracy_score(y_test, y_pred),
-        'precision': precision_score(y_test, y_pred, average='weighted'),
-        'recall': recall_score(y_test, y_pred, average='weighted'),
-        'f1_score': f1_score(y_test, y_pred, average='weighted')
-    }
-    return metrics, y_pred
+    best_model = grid_model.best_estimator_
+    y_pred = best_model.predict(X_test)
+    y_proba = best_model.predict_proba(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    auc = roc_auc_score(y_test, y_proba, multi_class='ovr')
+    return accuracy, f1, auc, y_pred
 
 def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
     """
@@ -29,14 +27,19 @@ def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
     plt.title(title)
     plt.show()
 
-def evaluate_models(models, X_test, y_test, labels):
+def evaluate_models(grid_models, X_test, y_test, labels):
     """
     Evaluate multiple models and print metrics + confusion matrix
     """
     results = {}
-    for name, model in models.items():
+    for name, grid_model in grid_models.items():
         print(f"Evaluating {name}...")
-        metrics, y_pred = evaluate_model(model, X_test, y_test)
+        accuracy, f1, auc, y_pred = evaluate_model(grid_model, X_test, y_test)
+        metrics = {
+            'accuracy': accuracy,
+            'f1_score': f1,
+            'auc': auc
+        }
         results[name] = metrics
         plot_confusion_matrix(y_test, y_pred, labels, title=f"{name} Confusion Matrix")
         print(f"{name} metrics: {metrics}\n")
