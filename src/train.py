@@ -26,10 +26,10 @@ def train_random_forest(X_train, y_train, debug=False):
         }
         cv = 5
 
-    grid = GridSearchCV(rf, param_grid, cv=cv, n_jobs=-1, scoring='accuracy', verbose=0)
-    grid.fit(X_train, y_train)
+    grid = GridSearchCV(rf, param_grid, cv=cv, n_jobs=-1, scoring='accuracy', verbose=0, return_train_score=True)
+    model = grid.fit(X_train, y_train)
     logging.info(f"RF best params: {grid.best_params_}")
-    return grid.best_estimator_
+    return model
 
 
 def train_svm(X_train, y_train, debug=False):
@@ -47,10 +47,10 @@ def train_svm(X_train, y_train, debug=False):
         }
         cv = 5
 
-    grid = GridSearchCV(svm, param_grid, cv=cv, n_jobs=-1, scoring='accuracy', verbose=0)
-    grid.fit(X_train, y_train)
+    grid = GridSearchCV(svm, param_grid, cv=cv, n_jobs=-1, scoring='accuracy', verbose=0, return_train_score=True)
+    model = grid.fit(X_train, y_train)
     logging.info(f"SVM best params: {grid.best_params_}")
-    return grid.best_estimator_
+    return model
 
 
 def train_logistic_regression(X_train, y_train, debug=False):
@@ -65,10 +65,10 @@ def train_logistic_regression(X_train, y_train, debug=False):
         param_grid = {'C': [100, 10, 1.0, 0.1, 0.01]}
         cv = 5
 
-    grid = GridSearchCV(lr, param_grid, cv=cv, n_jobs=-1, scoring='accuracy', verbose=0)
-    grid.fit(X_train, y_train)
+    grid = GridSearchCV(lr, param_grid, cv=cv, n_jobs=-1, scoring='accuracy', verbose=0, return_train_score=True)
+    model = grid.fit(X_train, y_train)
     logging.info(f"LogReg best params: {grid.best_params_}")
-    return grid.best_estimator_
+    return model
 
 def save_models(models, folder='models/'):
     if not os.path.exists(folder):
