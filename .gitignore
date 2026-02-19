@@ -1,0 +1,20 @@
+# MLflow artifacts and database
+mlartifacts/
+mlflow.db
+
+# Model files
+models/
+*.pkl
+
+# Data directory
+data/
+
+# And keep the existing entries for:
+__pycache__/
+.ipynb_checkpoints/
+venv/
+env/
+*.csv
+*.zip
+.DS_Store
+Thumbs.db
