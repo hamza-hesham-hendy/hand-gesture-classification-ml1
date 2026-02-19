@@ -1,0 +1,23 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python virtual environment (if you use venv)
+venv/
+env/
+*.egg-info/
+
+# Data files (optional, if too large, you can push small datasets)
+*.csv
+*.zip
+
+# MLflow (for research branch, optional)
+mlruns/
+
+# OS files
+.DS_Store
+Thumbs.db
