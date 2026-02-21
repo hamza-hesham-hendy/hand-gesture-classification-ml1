@@ -1,3 +1,13 @@
+"""
+preprocessing.py
+================
+Data preprocessing utilities for hand-gesture classification.
+
+Provides landmark normalization (wrist-centering and scale-normalization)
+and a convenience function to load the dataset CSV and split it into
+train / test sets.
+"""
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -53,6 +63,24 @@ def normalize_landmarks(df):
     return df_norm
 
 def load_and_split(csv_path, test_size=0.2, random_state=42):
+    """
+    Load hand-landmark data from a CSV file, normalize it, and split
+    into training and testing sets.
+
+    Parameters
+    ----------
+    csv_path : str
+        Path to the CSV file containing hand landmarks and a 'label' column.
+    test_size : float, optional
+        Fraction of data to reserve for testing (default 0.2).
+    random_state : int, optional
+        Random seed for reproducible splits (default 42).
+
+    Returns
+    -------
+    X_train, X_test, y_train, y_test : tuple
+        Feature matrices and label arrays for training and testing.
+    """
     df = pd.read_csv(csv_path)
     
     if 'label' not in df.columns:

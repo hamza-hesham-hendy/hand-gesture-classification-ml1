@@ -6,13 +6,13 @@ __pycache__/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Python virtual environment (if you use venv)
+# Python virtual environment
 venv/
+.venv/
 env/
 *.egg-info/
 
-# Data files (optional, if too large, you can push small datasets)
-*.csv
+# Large archive files
 *.zip
 
 # MLflow (for research branch, optional)

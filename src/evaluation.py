@@ -1,10 +1,35 @@
+"""
+evaluation.py
+=============
+Model evaluation utilities for hand-gesture classification.
+
+Provides functions to compute classification metrics (accuracy, F1-score,
+AUC, precision, recall) and to visualize confusion matrices for each
+trained model.
+"""
+
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, roc_auc_score
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, roc_auc_score, precision_score, recall_score
+
 
 def evaluate_model(grid_model, X_test, y_test):
     """
-    Evaluate a single model and return metrics and predictions
+    Evaluate a single GridSearchCV model on the test set.
+
+    Parameters
+    ----------
+    grid_model : GridSearchCV
+        A fitted grid-search object (uses .best_estimator_ internally).
+    X_test : array-like
+        Test feature matrix.
+    y_test : array-like
+        True labels for the test set.
+
+    Returns
+    -------
+    accuracy, f1, auc, precision, recall, y_pred : tuple
+        Classification metrics and the predicted labels.
     """
     best_model = grid_model.best_estimator_
     y_pred = best_model.predict(X_test)
@@ -12,16 +37,28 @@ def evaluate_model(grid_model, X_test, y_test):
     accuracy = accuracy_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred, average='weighted')
     auc = roc_auc_score(y_test, y_proba, multi_class='ovr')
-    return accuracy, f1, auc, y_pred
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    return accuracy, f1, auc, precision, recall, y_pred
 
 def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
     """
-    Plot a confusion matrix using seaborn heatmap
+    Plot a confusion matrix as a seaborn heatmap.
+
+    Parameters
+    ----------
+    y_test : array-like
+        True labels.
+    y_pred : array-like
+        Predicted labels.
+    labels : list
+        Ordered list of class labels for axis tick-labels.
+    title : str, optional
+        Plot title (default "Confusion Matrix").
     """
     cm = confusion_matrix(y_test, y_pred, labels=labels)
     plt.figure(figsize=(10,8))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-                xticklabels=labels, yticklabels=labels)
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=labels, yticklabels=labels)
     plt.xlabel("Predicted")
     plt.ylabel("True")
     plt.title(title)
@@ -29,16 +66,34 @@ def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
 
 def evaluate_models(grid_models, X_test, y_test, labels):
     """
-    Evaluate multiple models and print metrics + confusion matrix
+    Evaluate multiple models, print metrics, and display confusion matrices.
+
+    Parameters
+    ----------
+    grid_models : dict
+        Mapping of model name (str) to fitted GridSearchCV object.
+    X_test : array-like
+        Test feature matrix.
+    y_test : array-like
+        True labels for the test set.
+    labels : list
+        Ordered list of class labels.
+
+    Returns
+    -------
+    results : dict
+        Mapping of model name to a dict of metric values.
     """
     results = {}
     for name, grid_model in grid_models.items():
         print(f"Evaluating {name}...")
-        accuracy, f1, auc, y_pred = evaluate_model(grid_model, X_test, y_test)
+        accuracy, f1, auc, precision, recall, y_pred = evaluate_model(grid_model, X_test, y_test)
         metrics = {
             'accuracy': accuracy,
             'f1_score': f1,
-            'auc': auc
+            'auc': auc,
+            'precision': precision,
+            'recall': recall
         }
         results[name] = metrics
         plot_confusion_matrix(y_test, y_pred, labels, title=f"{name} Confusion Matrix")
