@@ -3,9 +3,9 @@ visualization.py
 ================
 Hand-landmark visualization utilities.
 
-Provides functions to plot individual hand samples (scatter + skeleton)
-and to display multiple random samples from a DataFrame for quick
-visual inspection of the dataset.
+This module provides functions to visually inspect hand samples by plotting the 
+21 2D landmarks and drawing the skeleton connection lines. This is useful 
+for verifying that the landmarks were correctly extracted and normalized.
 """
 
 import matplotlib.pyplot as plt

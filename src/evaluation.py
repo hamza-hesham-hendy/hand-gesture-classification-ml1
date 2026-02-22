@@ -3,9 +3,9 @@ evaluation.py
 =============
 Model evaluation utilities for hand-gesture classification.
 
-Provides functions to compute classification metrics (accuracy, F1-score,
-AUC, precision, recall) and to visualize confusion matrices for each
-trained model.
+This module provides tools for testing model performance on held-out data.
+It calculates standard classification metrics and generates visual aids
+(confusion matrices) to understand misclassifications.
 """
 
 import matplotlib.pyplot as plt

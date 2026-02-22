@@ -3,9 +3,15 @@ preprocessing.py
 ================
 Data preprocessing utilities for hand-gesture classification.
 
-Provides landmark normalization (wrist-centering and scale-normalization)
-and a convenience function to load the dataset CSV and split it into
-train / test sets.
+This module handled the transformation of raw MediaPipe coordinates into a 
+normalized format suitable for machine learning inference. It specifically
+handles wrist-centering and scale-normalization to make the classifier 
+invariant to hand position and size within the frame.
+
+Key Features:
+- Wrist-centering (moving the wrist landmark to the origin)
+- Scale-normalization (scaling the hand by the palm length)
+- Dataset splitting for training and testing
 """
 
 import numpy as np

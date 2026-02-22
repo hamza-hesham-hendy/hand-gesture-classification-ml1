@@ -21,3 +21,11 @@ mlruns/
 # OS files
 .DS_Store
 Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Generated Video Outputs
+*.mp4
+!my_hand_video.mp4

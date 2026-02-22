@@ -1,174 +1,100 @@
-# ✋ Hand Gesture Classification using MediaPipe Landmarks
+# ✋ Hand Gesture Recognition System
 
-This project builds a machine learning pipeline to classify hand gestures using hand landmark coordinates extracted from the **HaGRID** (Hand Gesture Recognition Image) dataset.
+This project implements a full machine learning pipeline for recognizing **18 different hand gestures** using hand landmark coordinates. The system leverages **MediaPipe** for real-time landmark extraction and **Scikit-Learn** for high-accuracy classification.
 
-The system includes data preprocessing, visualization, training multiple ML models, evaluation with performance metrics, and a real-time video demo using MediaPipe.
+The project covers data preprocessing, normalization, modular training with hyperparameter tuning (GridSearchCV), performance evaluation, and an **Interactive Demo** with both webcam and video processing support.
 
 ---
 
 ## 📁 Project Structure
 
-```
-hand-gesture-classification-ml1/
-│
+```text
+hand-gesture-recognition/
 ├── data/
-│   └── hand_landmarks_data.csv     # HaGRID landmarks (18 classes, 21 landmarks × 3 coords)
-│
+│   └── hand_landmarks_data.csv     # Pre-extracted landmarks (18 classes)
 ├── models/
-│   ├── RandomForest.pkl            # Trained Random Forest model
-│   ├── SVM.pkl                     # Trained SVM model
-│   ├── LogisticRegression.pkl      # Trained Logistic Regression model
-│   └── hand_landmarker.task        # MediaPipe hand landmarker model
-│
+│   ├── RandomForest.pkl            # Serialized ML model
+│   ├── SVM.pkl                     # Serialized ML model
+│   ├── LogisticRegression.pkl      # Serialized ML model
+│   └── hand_landmarker.task        # MediaPipe landmarker weights
 ├── src/
-│   ├── preprocessing.py            # Normalization and train/test split
-│   ├── visualization.py            # Hand landmark plotting
-│   ├── train.py                    # Model training with GridSearchCV
-│   ├── evaluation.py               # Metrics and confusion matrices
-│   └── image_processing.py         # Real-time MediaPipe landmark detection
-│
-├── testing.ipynb                   # End-to-end notebook (load → train → evaluate)
-├── video_demo.py                   # Real-time gesture classification on video
-├── annotated_output.mp4            # Sample output video
-├── requirements.txt
-├── .gitignore
-└── README.md
+│   ├── preprocessing.py            # Coordinate normalization logic
+│   ├── visualization.py            # Landmark & skeleton plotting
+│   ├── train.py                    # GridSearchCV training logic
+│   ├── evaluation.py               # Metrics & Confusion Matrices
+│   ├── vision.py                   # MediaPipe abstraction layer
+│   └── inference.py                # Core demo and prediction logic
+├── HandGestureSystem.ipynb         # Main Jupyter Notebook (Training & Demo)
+├── requirements.txt                # Project dependencies
+└── README.md                       # Project documentation
 ```
 
 ---
 
-## ✅ Components
-
-### 1️⃣ Data Preprocessing (`src/preprocessing.py`)
-- **Wrist-centering**: x/y coordinates are re-centered so the wrist (landmark 1) is the origin.
-- **Scale normalization**: x/y are divided by the distance from the wrist to the middle-finger tip (landmark 13), making all hands scale-invariant.
-- **Z coordinates** are left untouched (already processed by MediaPipe).
-- Stratified **train/test split** (80/20).
-
-### 2️⃣ Visualization (`src/visualization.py`)
-- Plot individual hand samples as scatter + skeleton overlays.
-- Plot multiple random samples from the dataset for visual inspection.
-
-### 3️⃣ Model Training (`src/train.py`)
-Three ML classifiers trained with **GridSearchCV** hyperparameter tuning:
-
-| Model | Best Accuracy |
-|---|---|
-| 🌲 Random Forest | **97.76%** |
-| 🔵 SVM (RBF Kernel) | 93.34% |
-| 📈 Logistic Regression | 85.76% |
-
-### 4️⃣ Evaluation (`src/evaluation.py`)
-For each model, the following metrics are reported:
-- **Accuracy**
-- **Precision** (weighted)
-- **Recall** (weighted)
-- **F1-score** (weighted)
-- **AUC** (one-vs-rest)
-- **Confusion Matrix** visualization
-
-### 5️⃣ Notebook (`testing.ipynb`)
-End-to-end pipeline in a single executable notebook:
-1. Load and visualize the dataset
-2. Preprocess (normalize landmarks)
-3. Train all 3 models
-4. Evaluate and compare models
-5. Save trained models to `models/`
-
-### 6️⃣ Video Demo (`video_demo.py`)
-Real-time hand-gesture classification on video or webcam:
-- Uses **MediaPipe Tasks API** (`HandLandmarker`) for landmark extraction.
-- Supports **majority voting** across all 3 models or a single specified model.
-- **Mode-smoothing** over a rolling time window to stabilize predictions.
-- Draws hand skeleton overlay and gesture label on each frame.
+## 🧪 Captured Gestures (18 Classes)
+The system is trained to recognize a wide variety of gestures, including:
+*   **Signs:** `ok`, `stop`, `palm`, `fist`, `like`, `dislike`, `call`, `rock`, `mute`.
+*   **Numbers/Fingers:** `one`, `two_up`, `three`, `four`, `peace`.
+*   **Inverted Gestures:** `peace_inverted`, `stop_inverted`, `two_up_inverted`.
 
 ---
 
-## 📦 Installation
+## 🛠️ Components & Features
 
-Clone the repository:
+### 1. Advanced Normalization (`src/preprocessing.py`)
+To ensure robustness against hand size and position, the system:
+- **Centering:** Re-centers all landmarks relative to the wrist (landmark 0).
+- **Scale Invariance:** Normalizes the distance of all landmarks based on the length from the wrist to the middle-finger base.
 
-```bash
-git clone https://github.com/hamza-hesham-hendy/hand-gesture-classification-ml1.git
-cd hand-gesture-classification-ml1
-```
+### 2. Machine Learning Pipeline (`src/train.py`)
+We train and compare three distinct models using **GridSearchCV** for best parameter selection:
+- **Random Forest:** The current best-performing model (~97.7% accuracy).
+- **SVM (RBF):** Highly reliable for non-linear boundary detection.
+- **Logistic Regression:** Provides a strong linear baseline.
 
-Install dependencies:
+### 3. Smart Interactive Demo (`src/inference.py`)
+The demo offers real-time visualization with several features:
+- **Source Choice:** Run using a **Live Webcam** or process a local **Video File** (`my_hand_video.mp4`).
+- **Best Model Detection:** Automatically detects which saved model has the highest validation score and uses it for prediction.
+- **Voting System:** Combines the predictions of all three models (RandomForest, SVM, LogReg) for a consensus-based stable result.
+- **Gesture Smoothing:** Implements a rolling-window filter to eliminate "flicker" in real-time predictions.
 
+---
+
+## 🚀 Getting Started
+
+### 1. Installation
+Ensure you have Python 3.9+ installed, then install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
----
+### 2. Training & Evaluation
+Open `HandGestureSystem.ipynb` in your favorite editor (VS Code, Jupyter, etc.).
+- Run the **Preprocessing** and **Visualization** sections to explore the data.
+- Run the **Training** section to generate the `.pkl` files in the `models/` folder.
+- Run the **Evaluation** section to see detailed metrics and confusion matrices.
 
-## 🚀 How to Run
-
-### Option 1: Run the Notebook (Training + Evaluation)
-
-```bash
-jupyter notebook testing.ipynb
-```
-
-Run all cells to:
-- Load and preprocess the dataset
-- Train Random Forest, SVM, and Logistic Regression models
-- Evaluate each model with metrics and confusion matrices
-- Save trained models to `models/`
-
-### Option 2: Run the Video Demo
-
-**With an input video file:**
-```bash
-python video_demo.py --input path/to/video.mp4 --output annotated_output.mp4
-```
-
-**With live webcam (default camera):**
-```bash
-python video_demo.py
-```
-
-**Using a specific model instead of majority voting:**
-```bash
-python video_demo.py --input video.mp4 --use-model RandomForest
-```
-
-**All available arguments:**
-| Argument | Description | Default |
-|---|---|---|
-| `--input` | Path to input video file (omit for webcam) | Webcam (index 0) |
-| `--output` | Save annotated output video to this path | None |
-| `--models-dir` | Folder containing trained `.pkl` files | `models/` |
-| `--window` | Mode-smoothing window size (frames) | 15 |
-| `--use-model` | Use a single model (e.g., `RandomForest`, `SVM`) | Majority vote |
-
-Press **`q`** to quit the live preview window.
+### 3. Running the Demo
+Scroll to the final cell in **Section 6** of the notebook. The demo will interactively ask you for:
+1.  **Input Source:** Press `L` for Webcam or `V` for Video.
+2.  **Prediction Method:** 
+    *   Press `B` for the **Best Model** (Auto-detected).
+    *   Press `M` for **Majority Voting** (Ensemble of all models).
+3.  **Save Output:** Option to save the result as `annotated_output.mp4`.
 
 ---
 
-## 📊 Results
+## 📊 Performance Summary
 
-| Model | Accuracy | Precision | Recall | F1-Score | AUC |
-|---|---|---|---|---|---|
-| **Random Forest** | **97.76%** | **97.80%** | **97.76%** | **97.76%** | **99.98%** |
-| SVM (RBF) | 93.34% | 93.60% | 93.34% | 93.34% | 99.72% |
-| Logistic Regression | 85.76% | 85.82% | 85.76% | 85.70% | 99.10% |
-
-**Best Model: Random Forest** with 97.76% accuracy.
-
----
-
-## 🧠 Models Used
-
-- **Random Forest** — Ensemble of decision trees with hyperparameter search over `n_estimators`, `max_depth`, and `criterion`.
-- **SVM (RBF Kernel)** — Support Vector Machine with search over `C` and `gamma`.
-- **Logistic Regression** — Linear classifier with L2 regularization and search over `C`.
-
-All models are tuned via **3-fold cross-validation** using `GridSearchCV`.
+| Model | Accuracy | F1-Score | AUC |
+| :--- | :--- | :--- | :--- |
+| **Random Forest** | **97.7%** | **0.97** | **0.99** |
+| SVM | 93.3% | 0.93 | 0.99 |
+| Logistic Regression | 85.7% | 0.85 | 0.99 |
 
 ---
 
 ## 👨‍💻 Author
-
-**Hamza Hesham Hendy**
-
-Hand Gesture Classification – ML1 Project
+**Hamza Hesham Hendy**  
+*Hand Gesture Recognition - Machine Learning Project*

@@ -3,9 +3,12 @@ train.py
 ========
 Model training utilities for hand-gesture classification.
 
-Provides functions to train three ML classifiers (Random Forest, SVM,
-Logistic Regression) via GridSearchCV hyperparameter tuning, as well as
-a helper to save the trained models to disk as .pkl files.
+This module provides a standardized interface for training multiple 
+scikit-learn classifiers using GridSearchCV for hyperparameter optimization.
+The models currently supported are:
+- Random Forest (Ensemble method)
+- Support Vector Machine (RBF Kernel)
+- Logistic Regression (Linear baseline)
 """
 
 import os
@@ -22,19 +25,22 @@ def train_random_forest(X_train, y_train, debug=False):
     """
     Train a Random Forest classifier using GridSearchCV.
 
+    Random Forest is an ensemble of decision trees. It is robust to overfitting
+    and handles non-linear relationships well.
+
     Parameters
     ----------
     X_train : array-like
-        Training feature matrix.
+        Training feature matrix (n_samples, n_features).
     y_train : array-like
-        Training labels.
+        Training labels (n_samples,).
     debug : bool, optional
         If True, use a minimal parameter grid for fast testing (default False).
 
     Returns
     -------
     GridSearchCV
-        Fitted grid-search object (access best model via .best_estimator_).
+        The fitted grid-search object. Use .best_estimator_ for the optimal model.
     """
     logging.info("Training Random Forest Classifier...")
     param_grid = {
@@ -67,6 +73,10 @@ def train_svm(X_train, y_train, debug=False):
     """
     Train an SVM (RBF kernel) classifier using GridSearchCV.
 
+    Support Vector Machines are effective in high dimensional spaces.
+    The RBF (Radial Basis Function) kernel allows the model to capture
+    complex non-linear boundaries.
+
     Parameters
     ----------
     X_train : array-like
@@ -79,7 +89,7 @@ def train_svm(X_train, y_train, debug=False):
     Returns
     -------
     GridSearchCV
-        Fitted grid-search object (access best model via .best_estimator_).
+        The fitted grid-search object. Use .best_estimator_ for the optimal model.
     """
     logging.info("Training SVM...")
 
@@ -113,6 +123,9 @@ def train_logistic_regression(X_train, y_train, debug=False):
     """
     Train a Logistic Regression classifier using GridSearchCV.
 
+    Logistic Regression is a simple yet powerful linear model for classification.
+    It serves as an excellent baseline and provides probabilistic predictions.
+
     Parameters
     ----------
     X_train : array-like
@@ -125,7 +138,7 @@ def train_logistic_regression(X_train, y_train, debug=False):
     Returns
     -------
     GridSearchCV
-        Fitted grid-search object (access best model via .best_estimator_).
+        The fitted grid-search object. Use .best_estimator_ for the optimal model.
     """
     logging.info("Training Logistic Regression...")
 
