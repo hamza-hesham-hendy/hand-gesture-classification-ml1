@@ -15,10 +15,10 @@ env/
 # Large archive files
 *.zip
 
-# MLflow
-mlruns/
-mlartifacts/
-mlflow.db
+# # MLflow
+# mlruns/
+# mlartifacts/
+# mlflow.db
 
 # OS files
 .DS_Store
