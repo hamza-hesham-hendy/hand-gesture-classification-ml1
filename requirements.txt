@@ -4,3 +4,6 @@ scikit-learn
 matplotlib
 seaborn
 mediapipe
+opencv-python
+mlflow
+jupyter

@@ -1,20 +1,32 @@
-# MLflow artifacts and database
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python virtual environment
+venv/
+.venv/
+env/
+*.egg-info/
+
+# Large archive files
+*.zip
+
+# MLflow
+mlruns/
 mlartifacts/
 mlflow.db
 
-# Model files
-models/
-*.pkl
-
-# Data directory
-data/
-
-# And keep the existing entries for:
-__pycache__/
-.ipynb_checkpoints/
-venv/
-env/
-*.csv
-*.zip
+# OS files
 .DS_Store
 Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Generated Video Outputs
+*.mp4
