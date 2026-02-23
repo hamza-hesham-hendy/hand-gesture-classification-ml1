@@ -267,3 +267,4 @@ class GestureSmoother:
     def reset(self):
         """Clear the history (useful when no hand is detected)."""
         self._window.clear()
+

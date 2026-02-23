@@ -44,6 +44,19 @@ def evaluate_model(grid_model, X_test, y_test):
 def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix", save_path=None):
     """
     Plot a confusion matrix as a seaborn heatmap.
+
+    Parameters
+    ----------
+    y_test : array-like
+        True labels.
+    y_pred : array-like
+        Predicted labels.
+    labels : list
+        Ordered list of class labels for axis tick-labels.
+    title : str, optional
+        Plot title (default "Confusion Matrix").
+    save_path : str, optional
+        Path to save the plot image (default None).
     """
     cm = confusion_matrix(y_test, y_pred, labels=labels)
     plt.figure(figsize=(10,8))
@@ -91,3 +104,4 @@ def evaluate_models(grid_models, X_test, y_test, labels):
         plot_confusion_matrix(y_test, y_pred, labels, title=f"{name} Confusion Matrix")
         print(f"{name} metrics: {metrics}\n")
     return results
+    

@@ -78,21 +78,23 @@ pip install -r requirements.txt
 ```
 
 ### 2. Training & Evaluation
-Open `HandGestureSystem.ipynb` in your favorite editor (VS Code, Jupyter, etc.).
+Open `HandGestureSystem.ipynb`. You can run it locally or on **Google Colab**:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hamza-hesham-hendy/hand-gesture-classification-ml1/blob/main/HandGestureSystem.ipynb)
+
+*Note: If running on Colab, ensure you clone the repository first to access the `src/` directory:*
+```python
+!git clone https://github.com/hamza-hesham-hendy/hand-gesture-classification-ml1.git
+%cd hand-gesture-classification-ml1
+!pip install -r requirements.txt
+```
+
 - Run the **Preprocessing** and **Visualization** sections to explore the data.
 - Run the **Training** section to generate the `.pkl` files in the `models/` folder.
 - Run the **Evaluation** section to see detailed metrics and confusion matrices.
-- Run the **MLflow Tracking** section to log your experiment results.
 
-### 3. MLflow UI
-To view your metrics and compare models, start the MLflow server:
-```bash
-mlflow ui
-```
-Then visit `http://localhost:5000` in your browser.
-
-### 4. Running the Demo
-Scroll to the final cell in **Section 7** of the notebook. The demo will interactively ask you for:
+### 3. Running the Demo
+Scroll to the final cell in **Section 6** of the notebook. The demo will interactively ask you for:
 1.  **Input Source:** Press `L` for Webcam or `V` for Video.
 2.  **Prediction Method:** 
     *   Press `B` for the **Best Model** (Auto-detected).
@@ -103,20 +105,11 @@ Scroll to the final cell in **Section 7** of the notebook. The demo will interac
 
 ## 📊 Performance Summary
 
-| Model | Accuracy | F1-Score | Precision | Recall | AUC |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Random Forest | 98.0% | 0.98 | 0.98 | 0.98 | 0.9991 |
-| SVM | 99.0% | 0.99 | 0.99 | 0.99 | 0.9997 |
-| Logistic Regression | 91.7% | 0.92 | 0.92 | 0.92 | 0.996 |
-
----
-
-## 🏆 Model Choice Rationale
-After comparing all experiments in **MLflow**, the **SVM** model was selected for the final registry and demo due to:
-1. **Superior Accuracy**: Achieved highest accuracy on the test set.
-2. **Robustness**: High F1-scores across all 18 classes, indicating it handles both frequent and rare gestures well.
-3. **Generalization**: The gap between cross-validation scores and test scores was minimal, showing low variance.
-4. **Latency**: Despite being an ensemble model, the prediction time remains well within the requirements for real-time (30+ FPS) processing.
+| Model | Accuracy | F1-Score | AUC |
+| :--- | :--- | :--- | :--- |
+| **Random Forest** | **97.7%** | **0.97** | **0.99** |
+| SVM | 93.3% | 0.93 | 0.99 |
+| Logistic Regression | 85.7% | 0.85 | 0.99 |
 
 ---
 

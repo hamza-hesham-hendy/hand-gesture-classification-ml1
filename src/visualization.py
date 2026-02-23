@@ -68,3 +68,4 @@ def plot_multiple_samples(df, n_samples=5):
     samples = df.sample(n_samples)
     for idx, row in samples.iterrows():
         plot_hand_sample(row, title=f"Sample {idx} - Label: {row['label']}")
+
