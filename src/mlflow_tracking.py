@@ -134,7 +134,7 @@ def log_model_with_mlflow(
         signature = mlflow.models.infer_signature(X_test, y_test)
         mlflow.sklearn.log_model(
             sk_model=model,
-            artifact_path="models",
+            artifact_path=model_name,
             signature=signature,
             input_example=X_test.iloc[[0]],
             registered_model_name=model_name
