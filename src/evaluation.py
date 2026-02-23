@@ -104,3 +104,4 @@ def evaluate_models(grid_models, X_test, y_test, labels):
         plot_confusion_matrix(y_test, y_pred, labels, title=f"{name} Confusion Matrix")
         print(f"{name} metrics: {metrics}\n")
     return results
+    

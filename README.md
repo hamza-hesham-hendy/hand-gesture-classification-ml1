@@ -71,13 +71,27 @@ pip install -r requirements.txt
 ```
 
 ### 2. Training & Evaluation
-Open `HandGestureSystem.ipynb` in your favorite editor (VS Code, Jupyter, etc.).
+Open `HandGestureSystem.ipynb`. You can run it locally or on **Google Colab**:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/hamza-hesham-hendy/hand-gesture-classification-ml1/blob/main/HandGestureSystem.ipynb)
+
+*Note: If running on Colab, ensure you clone the repository first to access the `src/` directory:*
+```python
+!git clone https://github.com/hamza-hesham-hendy/hand-gesture-classification-ml1.git
+%cd hand-gesture-classification-ml1
+!pip install -r requirements.txt
+```
+
 - Run the **Preprocessing** and **Visualization** sections to explore the data.
 - Run the **Training** section to generate the `.pkl` files in the `models/` folder.
 - Run the **Evaluation** section to see detailed metrics and confusion matrices.
 
 ### 3. Running the Demo
-Scroll to the final cell in the notebook. The demo will interactively ask you for:
+Scroll to the final cell in the notebook. 
+
+**⚠️ Note for Google Colab Users:** The interactive demo uses `cv2.imshow`, which requires a local graphical backend. It will **not** open a window on Google Colab. To see the system in action, please watch the [**Demo Video**](#-demo-video) or run the notebook locally.
+
+The demo will interactively ask you for:
 1.  **Input Source:** Press `L` for Webcam or `V` for Video.
 2.  **Prediction Method:** 
     *   Press `B` for the **Best Model** (Auto-detected).
@@ -102,6 +116,12 @@ After comparing all experiments, the **SVM** model was selected for the final de
 2. **Robustness**: High F1-scores across all 18 classes, indicating it handles both frequent and rare gestures well.
 3. **Generalization**: The gap between cross-validation scores and test scores was minimal, showing low variance.
 4. **Latency**: Despite being a complex model, the prediction time remains well within the requirements for real-time (30+ FPS) processing.
+
+---
+
+## 🎥 Demo Video
+You can find a short demonstration of the trained model's results here:
+[**Watch the Video Demo**](https://drive.google.com/file/d/1v_yaIdF79E2KLZNfO-nB1d29SLBLcetX/view?usp=sharing)
 
 ---
 
