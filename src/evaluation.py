@@ -41,7 +41,7 @@ def evaluate_model(grid_model, X_test, y_test):
     recall = recall_score(y_test, y_pred, average='weighted')
     return accuracy, f1, auc, precision, recall, y_pred
 
-def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
+def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix", save_path=None):
     """
     Plot a confusion matrix as a seaborn heatmap.
 
@@ -55,6 +55,8 @@ def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
         Ordered list of class labels for axis tick-labels.
     title : str, optional
         Plot title (default "Confusion Matrix").
+    save_path : str, optional
+        Path to save the plot image (default None).
     """
     cm = confusion_matrix(y_test, y_pred, labels=labels)
     plt.figure(figsize=(10,8))
@@ -62,7 +64,10 @@ def plot_confusion_matrix(y_test, y_pred, labels, title="Confusion Matrix"):
     plt.xlabel("Predicted")
     plt.ylabel("True")
     plt.title(title)
+    if save_path:
+        plt.savefig(save_path)
     plt.show()
+    plt.close()
 
 def evaluate_models(grid_models, X_test, y_test, labels):
     """

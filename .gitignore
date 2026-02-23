@@ -17,6 +17,8 @@ env/
 
 # MLflow (for research branch, optional)
 mlruns/
+mlartifacts/
+mlflow.db
 
 # OS files
 .DS_Store

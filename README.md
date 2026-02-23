@@ -26,6 +26,7 @@ hand-gesture-recognition/
 │   └── inference.py                # Core demo and prediction logic
 ├── HandGestureSystem.ipynb         # Main Jupyter Notebook (Training & Demo)
 ├── requirements.txt                # Project dependencies
+├── setup_env.bat                   # Environment setup script
 └── README.md                       # Project documentation
 ```
 
@@ -48,7 +49,7 @@ To ensure robustness against hand size and position, the system:
 
 ### 2. Machine Learning Pipeline (`src/train.py`)
 We train and compare three distinct models using **GridSearchCV** for best parameter selection:
-- **Random Forest:** The current best-performing model (~97.7% accuracy).
+- **Random Forest:** Ensemble-based classifier.
 - **SVM (RBF):** Highly reliable for non-linear boundary detection.
 - **Logistic Regression:** Provides a strong linear baseline.
 
@@ -76,7 +77,7 @@ Open `HandGestureSystem.ipynb` in your favorite editor (VS Code, Jupyter, etc.).
 - Run the **Evaluation** section to see detailed metrics and confusion matrices.
 
 ### 3. Running the Demo
-Scroll to the final cell in **Section 6** of the notebook. The demo will interactively ask you for:
+Scroll to the final cell in the notebook. The demo will interactively ask you for:
 1.  **Input Source:** Press `L` for Webcam or `V` for Video.
 2.  **Prediction Method:** 
     *   Press `B` for the **Best Model** (Auto-detected).
@@ -87,11 +88,20 @@ Scroll to the final cell in **Section 6** of the notebook. The demo will interac
 
 ## 📊 Performance Summary
 
-| Model | Accuracy | F1-Score | AUC |
-| :--- | :--- | :--- | :--- |
-| **Random Forest** | **97.7%** | **0.97** | **0.99** |
-| SVM | 93.3% | 0.93 | 0.99 |
-| Logistic Regression | 85.7% | 0.85 | 0.99 |
+| Model | Accuracy | F1-Score | Precision | Recall | AUC |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Random Forest | 98.0% | 0.98 | 0.98 | 0.98 | 0.9991 |
+| SVM | 99.0% | 0.99 | 0.99 | 0.99 | 0.9997 |
+| Logistic Regression | 91.7% | 0.92 | 0.92 | 0.92 | 0.996 |
+
+---
+
+## 🏆 Model Choice Rationale
+After comparing all experiments, the **SVM** model was selected for the final demo due to:
+1. **Superior Accuracy**: Achieved highest accuracy on the test set.
+2. **Robustness**: High F1-scores across all 18 classes, indicating it handles both frequent and rare gestures well.
+3. **Generalization**: The gap between cross-validation scores and test scores was minimal, showing low variance.
+4. **Latency**: Despite being a complex model, the prediction time remains well within the requirements for real-time (30+ FPS) processing.
 
 ---
 
